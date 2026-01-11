@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="breadcrumb-wrap">
+    <a href="{{ url_for('index') }}">首页</a> <span>/</span> {{ active_l1 }}
+</div>
+
+<div class="container-fluid">
+    <h2 style="color: #333; margin-bottom: 20px;">{{ active_l1 }} - 功能概览</h2>
+    <p style="color: #666; margin-bottom: 30px;">请从左侧菜单选择具体功能，或点击下方快捷卡片。</p>
+    
+    <div class="grid">
+        {% for module in modules %}
+        <a href="{{ url_for('level3_view', level1_name=active_l1, level2_name=module) }}" class="card">
+            <h3>{{ module }}</h3>
+            <p style="font-size: 12px; color: #999; margin-top: 10px;">点击展开详情</p>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

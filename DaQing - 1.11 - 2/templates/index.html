@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    /* === 1. 背景与整体布局 === */
+    :root {
+        --sgcc-dark-green: #006938;  /* 国网标准深绿 */
+        --sgcc-light-green: #e9f5ef; /* 浅绿背景 */
+        --sgcc-hover-green: #008a4e; /* 悬停亮绿 */
+        --tech-grey: #f4f6f9;        /* 科技灰背景 */
+    }
+
+    body {
+        background-color: var(--tech-grey);
+        /* 添加一个淡淡的网格背景，增加科技感 */
+        background-image: 
+            linear-gradient(rgba(0, 105, 56, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 105, 56, 0.03) 1px, transparent 1px);
+        background-size: 30px 30px;
+    }
+
+    .dashboard-container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    /* === 2. 头部标题区 === */
+    .dashboard-header {
+        text-align: center;
+        margin-bottom: 50px;
+        position: relative;
+    }
+
+    .dashboard-title {
+        font-size: 32px;
+        font-weight: 800;
+        color: #333;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+    }
+
+    .dashboard-title span {
+        color: var(--sgcc-dark-green);
+        position: relative;
+    }
+
+    /* 标题下方的装饰线 */
+    .dashboard-title span::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 4px;
+        background: var(--sgcc-dark-green);
+        border-radius: 2px;
+    }
+
+    .dashboard-subtitle {
+        color: #666;
+        font-size: 14px;
+        margin-top: 15px;
+    }
+
+    /* === 3. 卡片网格布局 === */
+    .module-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 响应式布局 */
+        gap: 30px;
+        padding: 10px;
+    }
+
+    /* === 4. 炫酷卡片设计 === */
+    .module-card {
+        background: white;
+        border-radius: 12px;
+        padding: 35px 25px;
+        text-decoration: none;
+        color: #333;
+        position: relative;
+        overflow: hidden;
+        /* 玻璃拟态阴影 */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.02);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* 弹性动画 */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    /* 顶部绿色装饰条 */
+    .module-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: var(--sgcc-dark-green);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s ease;
+    }
+
+    /* 悬停效果 */
+    .module-card:hover {
+        transform: translateY(-10px); /* 上浮 */
+        box-shadow: 0 20px 40px rgba(0, 105, 56, 0.15); /* 绿色光晕阴影 */
+    }
+
+    .module-card:hover::before {
+        transform: scaleX(1); /* 顶部线条展开 */
+    }
+
+    /* 图标区域 */
+    .card-icon {
+        font-size: 48px;
+        margin-bottom: 20px;
+        background: var(--sgcc-light-green);
+        width: 90px;
+        height: 90px;
+        line-height: 90px;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+
+    .module-card:hover .card-icon {
+        background: var(--sgcc-dark-green);
+        color: white;
+        transform: rotateY(180deg); /* 图标翻转特效 */
+    }
+
+    /* 文字区域 */
+    .card-title {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .card-desc {
+        font-size: 13px;
+        color: #888;
+        line-height: 1.5;
+    }
+
+    /* 右下角装饰箭头 */
+    .card-arrow {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: all 0.3s ease;
+        color: var(--sgcc-dark-green);
+        font-size: 18px;
+    }
+
+    .module-card:hover .card-arrow {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+</style>
+
+<div class="breadcrumb">
+    <a href="{{ url_for('index') }}">首页</a> <span>&gt;</span> 功能模块选择
+</div>
+
+<div class="dashboard-container">
+    
+    <div class="dashboard-header">
+        <div class="dashboard-title">配网规划评审 <span>效能提升应用</span></div>
+        <div class="dashboard-subtitle">Intelligent Distribution Network Planning & Review System</div>
+    </div>
+
+    <div class="module-grid">
+        
+        <a href="{{ url_for('level2_view', level1_name='方案编制生成') }}" class="module-card">
+            <div class="card-icon">⚡</div>
+            <div class="card-title">方案编制生成</div>
+            <div class="card-desc">自动生成规划报告，支持多模态数据融合与模板化输出。</div>
+            <div class="card-arrow"><i class="fas fa-arrow-right">→</i></div>
+        </a>
+
+        <a href="{{ url_for('level2_view', level1_name='动态数据同步') }}" class="module-card">
+            <div class="card-icon">🔄</div>
+            <div class="card-title">动态数据同步</div>
+            <div class="card-desc">实时同步PMS、GIS及营销系统数据，确保源端一致性。</div>
+            <div class="card-arrow"><i class="fas fa-arrow-right">→</i></div>
+        </a>
+
+        <a href="{{ url_for('level2_view', level1_name='全流程闭环') }}" class="module-card">
+            <div class="card-icon">♾️</div> <div class="card-title">全流程闭环</div>
+            <div class="card-desc">实现从规划、设计到评审、实施的全生命周期闭环管理。</div>
+            <div class="card-arrow"><i class="fas fa-arrow-right">→</i></div>
+        </a>
+
+        <a href="{{ url_for('level2_view', level1_name='知识库建设管理') }}" class="module-card">
+            <div class="card-icon">📚</div>
+            <div class="card-title">知识库建设</div>
+            <div class="card-desc">沉淀历史评审经验，构建配网规划专家知识图谱。</div>
+            <div class="card-arrow"><i class="fas fa-arrow-right">→</i></div>
+        </a>
+
+        <a href="{{ url_for('level2_view', level1_name='质量评测') }}" class="module-card">
+            <div class="card-icon">📊</div>
+            <div class="card-title">质量评测</div>
+            <div class="card-desc">基于大模型的合规性审查、缺陷分级与逻辑合理性评分。</div>
+            <div class="card-arrow"><i class="fas fa-arrow-right">→</i></div>
+        </a>
+
+        <a href="{{ url_for('level2_view', level1_name='建议生成') }}" class="module-card">
+            <div class="card-icon">💡</div>
+            <div class="card-title">建议生成</div>
+            <div class="card-desc">智能生成整改建议与优化策略，辅助决策制定。</div>
+            <div class="card-arrow"><i class="fas fa-arrow-right">→</i></div>
+        </a>
+
+    </div>
+</div>
+
+{% endblock %}
